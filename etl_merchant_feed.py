@@ -96,15 +96,29 @@ def main():
     skipped   = 0
     now       = datetime.now().strftime("%d.%m.%Y %H:%M")
 
-    # 1. Descarca feed Gomag
-    try:
-        resp = requests.get(GOMAG_FEED_URL, timeout=30)
-        resp.raise_for_status()
-    except Exception as e:
-        msg = f"❌ Merchant Feed ETL — {now}\nNu pot descarca feed-ul Gomag:\n{e}"
-        send_telegram(msg)
-        send_email("❌ EROARE Merchant Feed ETL", msg)
-        raise SystemExit(1)
+    # 1. Descarca feed Gomag (3 incercari, 30 min intre ele)
+    MAX_RETRIES = 3
+    RETRY_DELAY = 30 * 60  # 30 minute
+    resp = None
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            resp = requests.get(GOMAG_FEED_URL, timeout=30)
+            resp.raise_for_status()
+            break
+        except Exception as e:
+            if attempt < MAX_RETRIES:
+                send_telegram(
+                    f"⚠️ Merchant Feed ETL — {now}\n"
+                    f"Incercarea {attempt}/{MAX_RETRIES} esuata: {e}\n"
+                    f"Reincercare in 30 minute..."
+                )
+                import time
+                time.sleep(RETRY_DELAY)
+            else:
+                msg = f"❌ Merchant Feed ETL — {now}\nToare cele {MAX_RETRIES} incercari au esuat:\n{e}"
+                send_telegram(msg)
+                send_email("❌ EROARE Merchant Feed ETL", msg)
+                raise SystemExit(1)
 
     # 2. Parseaza XML input (repara <> generat de Gomag daca Tag Produs e gol)
     try:

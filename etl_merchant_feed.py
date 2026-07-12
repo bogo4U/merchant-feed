@@ -54,6 +54,15 @@ def fix_availability(val):
     v = (val or "").strip().lower()
     return "in stock" if v in ["da", "yes", "1", "true", "in stock"] else "out of stock"
 
+def fix_link(url):
+    """Gomag returneaza linkuri pe domeniul intern (marsupiuro.gomag.ro) cand
+    feed-ul e descarcat prin http. Merchant Center are inregistrat oficial
+    https://www.marsupiu.ro, deci orice alt domeniu e respins ca 'Mismatched
+    online store URL'. Rescriem catre domeniul public corect."""
+    if not url:
+        return url
+    return re.sub(r"^https?://marsupiuro\.gomag\.ro", "https://www.marsupiu.ro", url)
+
 def detect_type(title):
     t = title.lower()
     if "marsupiu" in t:
@@ -178,7 +187,7 @@ def main():
         etree.SubElement(entry, f"{G}id").text           = pid
         etree.SubElement(entry, f"{G}title").text        = title
         etree.SubElement(entry, f"{G}description").text  = description
-        etree.SubElement(entry, f"{G}link").text         = link
+        etree.SubElement(entry, f"{G}link").text         = fix_link(link)
         etree.SubElement(entry, f"{G}image_link").text   = image_link
         etree.SubElement(entry, f"{G}price").text        = price
 

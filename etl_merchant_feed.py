@@ -13,7 +13,7 @@ from lxml import etree
 import requests
 
 # ── Config ───────────────────────────────────────────────────────────────────
-GOMAG_FEED_URL  = "https://www.marsupiu.ro/feed/merchant.xml"
+GOMAG_FEED_URL  = "http://www.marsupiu.ro/feed/merchant.xml"  # https e stricat pe serverul Gomag (SSL internal_error) din 10 iun 2026
 OUTPUT_FILE     = "merchant_feed.xml"
 STORE_NAME      = "Marsupiu.ro"
 STORE_URL       = "https://www.marsupiu.ro"

@@ -28,7 +28,7 @@ G_NS = "http://base.google.com/ns/1.0"
 
 GOOGLE_CATEGORY = {
     "marsupiu": "Baby & Toddler > Baby Transport > Baby Carriers",
-    "ham":      "Baby & Toddler > Baby Transport > Baby Reins & Harnesses",
+    "ham":      "Baby & Toddler > Baby Safety > Baby Safety Harnesses & Leashes",
 }
 
 # ── Helpers ──────────────────────────────────────────────────────────────────

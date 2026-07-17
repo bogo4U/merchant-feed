@@ -29,6 +29,7 @@ G_NS = "http://base.google.com/ns/1.0"
 GOOGLE_CATEGORY = {
     "marsupiu": "Baby & Toddler > Baby Transport > Baby Carriers",
     "ham":      "Baby & Toddler > Baby Safety > Baby Safety Harnesses & Leashes",
+    "geanta":   "Luggage & Bags > Diaper Bags",
 }
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -69,6 +70,8 @@ def detect_type(title):
         return "marsupiu"
     if "ham" in t:
         return "ham"
+    if "geanta" in t or "geantă" in t:
+        return "geanta"
     return ""
 
 # ── Notificari ───────────────────────────────────────────────────────────────
